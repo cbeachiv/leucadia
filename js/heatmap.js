@@ -1,6 +1,6 @@
 // ── Config ────────────────────────────────────────────────────────────────────
 // Replace with your deployed Google Apps Script Web App URL
-const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-kRLJkScaHUe3E-pN9Q8F6v-FO_gt4LV7ml2R4hWdbYRlcq6O40CYVTLYnIj-4vIYiA/exec';
 
 // Map center: Leucadia / Encinitas border area
 const MAP_CENTER = [33.063, -117.299];
