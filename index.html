@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where does Leucadia start?</title>
+  <meta name="description" content="San Diego's most debated border. Tell us exactly where you think Leucadia begins and Encinitas ends." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* index-only overrides */
+    .intro-section { padding: 64px 0; }
+    .intro-section p {
+      font-size: 1rem;
+      color: #4b5563;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .heatmap-teaser {
+      background: var(--sand);
+      border-radius: 10px;
+      padding: 36px;
+      margin: 0 0 48px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .heatmap-teaser .icon { font-size: 2rem; flex-shrink: 0; }
+    .heatmap-teaser h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+    .heatmap-teaser p { font-size: 0.9rem; color: var(--grey); margin: 0; }
+    .heatmap-teaser a { display: inline-block; margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a class="site-name" href="index.html">wheredoesleucadiastart.com</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="submit.html">Submit</a></li>
+        <li><a href="heatmap.html">Heat Map</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow">San Diego's most debated border</span>
+        <h1>Where does<br>Leucadia start?</h1>
+        <p>
+          Everyone who lives along the 101 has an opinion. The signs are vague,
+          the locals are divided, and the city boundaries don't help.
+          Drop a pin and settle the debate — or add to it.
+        </p>
+        <div class="hero-actions">
+          <a href="submit.html" class="btn btn-primary">Submit your answer</a>
+          <a href="heatmap.html" class="btn btn-secondary">See the heat map</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="stats-bar">
+      <div class="container">
+        <span class="stat-number" id="submission-count">—</span>
+        <span class="stat-label">answers submitted</span>
+      </div>
+    </div>
+
+    <section class="intro-section">
+      <div class="container">
+
+        <div class="heatmap-teaser">
+          <div class="icon">🗺️</div>
+          <div>
+            <h3>The community has spoken (sort of)</h3>
+            <p>
+              Every answer gets plotted on a map. The hotter the spot,
+              the more people agree that's where Leucadia begins.
+            </p>
+            <a href="heatmap.html" class="btn btn-secondary" style="font-size:0.85rem; padding:9px 18px;">View heat map →</a>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <h2 class="section-title">How it works</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h3>Drop a pin</h3>
+              <p>Use the map on the submission page to mark the exact spot where you think Leucadia begins — or Encinitas ends, depending on your loyalties.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h3>Add context (optional)</h3>
+              <p>Give a street name, landmark, or brief explanation. We love a good "it's definitely at the Lumberyard" argument.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h3>Watch the map heat up</h3>
+              <p>Your answer joins the heat map. Where do the clusters form? Is there consensus, or pure chaos?</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        A community curiosity project &nbsp;·&nbsp;
+        <a href="submit.html">Submit your answer</a> &nbsp;·&nbsp;
+        <a href="heatmap.html">Heat map</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Fetch submission count from Apps Script doGet endpoint
+    // Replace SCRIPT_URL with your deployed Apps Script URL
+    const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+    if (SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+      fetch(SCRIPT_URL)
+        .then(r => r.json())
+        .then(data => {
+          const count = Array.isArray(data) ? data.length : 0;
+          // Show total rows including those without pins (historical)
+          document.getElementById('submission-count').textContent = count;
+        })
+        .catch(() => {
+          document.getElementById('submission-count').textContent = '?';
+        });
+    }
+  </script>
+
+</body>
+</html>

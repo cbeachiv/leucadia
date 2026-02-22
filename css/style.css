@@ -1,0 +1,367 @@
+/* ── Variables ──────────────────────────────────────────── */
+:root {
+  --blue:   #1a3a5c;
+  --sand:   #f5f0e8;
+  --coral:  #e05c3a;
+  --white:  #ffffff;
+  --grey:   #6b7280;
+  --light:  #f9f8f6;
+  --border: #e5e0d8;
+
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+
+  --max-w: 680px;
+  --radius: 6px;
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-sans);
+  background: var(--white);
+  color: #1a1a1a;
+  line-height: 1.6;
+}
+img { display: block; max-width: 100%; }
+a { color: var(--blue); text-decoration: underline; }
+a:hover { color: var(--coral); }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Nav ────────────────────────────────────────────────── */
+nav {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+}
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+nav .site-name {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--blue);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+nav .nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+nav .nav-links a {
+  font-size: 0.875rem;
+  color: var(--grey);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+nav .nav-links a:hover { color: var(--blue); }
+nav .nav-links a.active { color: var(--blue); font-weight: 600; }
+
+/* ── Hero (index) ───────────────────────────────────────── */
+.hero {
+  padding: 80px 0 64px;
+  text-align: center;
+}
+.hero .eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  line-height: 1.1;
+  color: var(--blue);
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+.hero p {
+  font-size: 1.1rem;
+  color: var(--grey);
+  max-width: 520px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  display: inline-block;
+  padding: 13px 28px;
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.btn:hover { opacity: 0.88; transform: translateY(-1px); text-decoration: none; }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--coral); color: var(--white); }
+.btn-secondary {
+  background: transparent;
+  color: var(--blue);
+  border: 1.5px solid var(--blue);
+}
+
+/* ── Divider ────────────────────────────────────────────── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 48px 0;
+}
+
+/* ── Stats bar (index) ──────────────────────────────────── */
+.stats-bar {
+  background: var(--sand);
+  padding: 28px 0;
+  text-align: center;
+}
+.stats-bar .stat-number {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  color: var(--blue);
+  display: block;
+}
+.stats-bar .stat-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-top: 4px;
+}
+
+/* ── How it works (index) ───────────────────────────────── */
+.how-it-works {
+  padding: 64px 0;
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: var(--blue);
+  margin-bottom: 32px;
+  letter-spacing: -0.01em;
+}
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.step {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.step-num {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-body h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 4px;
+}
+.step-body p { font-size: 0.95rem; color: var(--grey); }
+
+/* ── Form page ──────────────────────────────────────────── */
+.page-header {
+  padding: 56px 0 40px;
+}
+.page-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  color: var(--blue);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.page-header p { font-size: 1rem; color: var(--grey); }
+
+.form-card {
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 36px;
+  margin-bottom: 48px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 7px;
+  letter-spacing: 0.01em;
+}
+.form-group .hint {
+  font-size: 0.8rem;
+  color: var(--grey);
+  margin-top: 5px;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  background: var(--white);
+  transition: border-color 0.15s;
+  outline: none;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--blue);
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+/* ── Map pin drop ───────────────────────────────────────── */
+.map-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 8px;
+  display: block;
+}
+.map-hint {
+  font-size: 0.8rem;
+  color: var(--grey);
+  margin-bottom: 10px;
+}
+#pin-map {
+  width: 100%;
+  height: 340px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  z-index: 0;
+}
+.pin-coords {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--grey);
+  min-height: 18px;
+}
+.pin-required-msg {
+  font-size: 0.8rem;
+  color: var(--coral);
+  margin-top: 6px;
+  display: none;
+}
+
+/* ── Submit success state ───────────────────────────────── */
+#success-message {
+  display: none;
+  text-align: center;
+  padding: 60px 0;
+}
+#success-message .checkmark {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+#success-message h2 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+#success-message p { color: var(--grey); margin-bottom: 24px; }
+
+/* ── Heat map page ──────────────────────────────────────── */
+.heatmap-header {
+  padding: 48px 0 24px;
+}
+.heatmap-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  color: var(--blue);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.heatmap-header p { font-size: 0.95rem; color: var(--grey); }
+
+#heat-map {
+  width: 100%;
+  height: 520px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--grey);
+  margin-bottom: 48px;
+}
+.legend-gradient {
+  width: 120px;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #4575b4, #fee090, #d73027);
+  flex-shrink: 0;
+}
+
+.loading-msg {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--grey);
+  font-size: 0.95rem;
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--grey);
+}
+footer a { color: var(--grey); }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .form-card { padding: 24px 20px; }
+  nav .nav-links { gap: 16px; }
+  #pin-map { height: 260px; }
+  #heat-map { height: 380px; }
+  .hero { padding: 56px 0 48px; }
+}

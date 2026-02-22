@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit your answer · Where does Leucadia start?</title>
+  <meta name="description" content="Drop a pin on the map to mark where you think Leucadia begins." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a class="site-name" href="index.html">wheredoesleucadiastart.com</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="submit.html" class="active">Submit</a></li>
+        <li><a href="heatmap.html">Heat Map</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+
+      <div class="page-header">
+        <h1>Submit your answer</h1>
+        <p>Where do <em>you</em> think Leucadia starts? Drop a pin on the map below.</p>
+      </div>
+
+      <!-- Success state (hidden until submit) -->
+      <div id="success-message">
+        <div class="checkmark">📍</div>
+        <h2>Pin dropped. Thanks.</h2>
+        <p>Your answer has been added to the map. Let's see if anyone agrees with you.</p>
+        <a href="heatmap.html" class="btn btn-primary">See the heat map</a>
+        &nbsp;
+        <a href="index.html" class="btn btn-secondary">Back home</a>
+      </div>
+
+      <!-- Form -->
+      <div id="form-wrapper">
+        <form id="submission-form" class="form-card" novalidate>
+
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+            <p class="hint">Not shared publicly. We won't email you.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="answer">Your take (optional)</label>
+            <textarea id="answer" name="answer" placeholder="e.g. &quot;It starts at Grandview — everyone knows this.&quot;"></textarea>
+            <p class="hint">A street name, intersection, landmark, or whatever you want to say.</p>
+          </div>
+
+          <!-- Map pin drop -->
+          <div class="form-group">
+            <span class="map-label">Drop your pin <span style="color:var(--coral)">*</span></span>
+            <p class="map-hint">Click anywhere on the map to mark where you think Leucadia begins.</p>
+            <div id="pin-map"></div>
+            <p class="pin-coords" id="pin-coords"></p>
+            <p class="pin-required-msg" id="pin-required-msg">Please drop a pin on the map before submitting.</p>
+            <input type="hidden" id="lat" name="lat" />
+            <input type="hidden" id="lng" name="lng" />
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submit-btn" style="width:100%; font-size:1rem; padding:15px;">
+            Submit my answer
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        A community curiosity project &nbsp;·&nbsp;
+        <a href="heatmap.html">Heat map</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/submit.js"></script>
+
+</body>
+</html>

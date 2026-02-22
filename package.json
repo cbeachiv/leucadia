@@ -1,0 +1,13 @@
+{
+  "name": "leucadia",
+  "version": "1.0.0",
+  "description": "wheredoesleucadiastart.com — community Leucadia border project",
+  "type": "module",
+  "scripts": {
+    "geocode": "node scripts/geocode.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "node-fetch": "^3.3.2"
+  }
+}
