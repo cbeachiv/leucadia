@@ -40,8 +40,72 @@ function doPost(e) {
   }
 }
 
+// ── geocodeExistingRows: run once manually to backfill lat/lng ────────────────
+// Before running: edit col D in the sheet so answers are clean addresses or
+// intersections (e.g. "La Costa Ave & Coast Hwy 101, Encinitas, CA").
+// Rows that already have lat/lng are skipped automatically.
+// In the Apps Script editor: select this function from the dropdown, click Run.
+function geocodeExistingRows() {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+  const rows  = sheet.getDataRange().getValues();
+
+  let geocoded = 0, skipped = 0, failed = 0;
+
+  for (let i = 1; i < rows.length; i++) {
+    const row    = rows[i];
+    // Use col G (geocode_address) if present, otherwise fall back to col D (original answer)
+    const geocodeAddr = (row[6] || '').toString().trim();
+    const answer      = geocodeAddr || (row[3] || '').toString().trim();
+    const hasLat = row[4] !== '' && row[4] != null;
+    const hasLng = row[5] !== '' && row[5] != null;
+
+    if (hasLat && hasLng) {
+      Logger.log('Row ' + (i + 1) + ': already has coordinates — skipping');
+      skipped++;
+      continue;
+    }
+
+    if (!answer) {
+      Logger.log('Row ' + (i + 1) + ': empty answer — skipping');
+      skipped++;
+      continue;
+    }
+
+    Utilities.sleep(1200); // Nominatim rate limit: max 1 request per second
+
+    const query = encodeURIComponent(answer + ', Encinitas, CA');
+    const url   = 'https://nominatim.openstreetmap.org/search?q=' + query + '&format=json&limit=1&countrycodes=us';
+
+    try {
+      const response = UrlFetchApp.fetch(url, {
+        headers: { 'User-Agent': 'wheredoesleucadiastart.com/1.0 (chasetbeach@gmail.com)' },
+        muteHttpExceptions: true,
+      });
+      const data = JSON.parse(response.getContentText());
+
+      if (data && data.length > 0) {
+        sheet.getRange('E' + (i + 1) + ':F' + (i + 1)).setValues([[
+          parseFloat(data[0].lat),
+          parseFloat(data[0].lon),
+        ]]);
+        Logger.log('Row ' + (i + 1) + ': ✓ ' + data[0].lat + ', ' + data[0].lon + ' — "' + answer + '"');
+        geocoded++;
+      } else {
+        Logger.log('Row ' + (i + 1) + ': ✗ No result — "' + answer + '"');
+        failed++;
+      }
+    } catch (err) {
+      Logger.log('Row ' + (i + 1) + ': Error — ' + err.toString());
+      failed++;
+    }
+  }
+
+  Logger.log('─────────────────────────────────────');
+  Logger.log('Done.  Geocoded: ' + geocoded + '  |  Skipped: ' + skipped + '  |  Failed: ' + failed);
+}
+
 // ── doGet: return all lat/lng points for the heat map ────────────────────────
-function doGet(e) {
+function doGet() {
   try {
     const sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
     const rows  = sheet.getDataRange().getValues();
@@ -54,9 +118,6 @@ function doGet(e) {
         parseFloat(row[5]),  // lng
         1,                   // intensity (uniform — heat layer handles density)
       ]);
-
-    // Also return total row count (including rows without pins) for the submissions counter
-    const totalRows = rows.length - 1; // subtract header
 
     return ContentService
       .createTextOutput(JSON.stringify(points))
