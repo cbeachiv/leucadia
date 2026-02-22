@@ -175,48 +175,59 @@
     const MAP_CENTER = [33.063, -117.299];
 
     // ── Heat map ─────────────────────────────────────────────────
-    // Initialize AFTER making the div visible so Leaflet can measure it
-    fetch(SCRIPT_URL)
-      .then(r => r.json())
-      .then(points => {
-        // Update submission count
+    async function initPage() {
+      try {
+        const res    = await fetch(SCRIPT_URL);
+        const points = await res.json();
+
+        // Set count first — before any Leaflet code can throw
         document.getElementById('submission-count').textContent =
-          Array.isArray(points) ? points.length : '?';
+          Array.isArray(points) ? points.length : '0';
 
-        // Show map container first, then init Leaflet
-        document.getElementById('loading-msg').style.display = 'none';
-        document.getElementById('heat-map').style.display    = 'block';
-        document.getElementById('legend').style.display      = 'flex';
+        try {
+          document.getElementById('loading-msg').style.display = 'none';
+          document.getElementById('heat-map').style.display    = 'block';
+          document.getElementById('legend').style.display      = 'flex';
 
-        const heatMap = L.map('heat-map').setView(MAP_CENTER, 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-          maxZoom: 19,
-        }).addTo(heatMap);
+          const heatMap = L.map('heat-map').setView(MAP_CENTER, 13);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            maxZoom: 19,
+          }).addTo(heatMap);
+          heatMap.invalidateSize();
 
-        if (!points || points.length === 0) {
-          document.getElementById('map-count').textContent = 'No pinned answers yet — be the first!';
-          return;
+          if (!points || points.length === 0) {
+            document.getElementById('map-count').textContent = 'No pinned answers yet — be the first!';
+            return;
+          }
+
+          document.getElementById('map-count').textContent =
+            `${points.length} answer${points.length === 1 ? '' : 's'} plotted.`;
+
+          L.heatLayer(points, {
+            radius: 28, blur: 20, maxZoom: 17,
+            gradient: { 0.2: '#4575b4', 0.5: '#fee090', 1.0: '#d73027' },
+          }).addTo(heatMap);
+
+          const latlngs = points.map(p => [p[0], p[1]]);
+          if (latlngs.length > 1) {
+            heatMap.fitBounds(L.latLngBounds(latlngs), { padding: [40, 40], maxZoom: 15 });
+          }
+        } catch (mapErr) {
+          console.error('Heat map render error:', mapErr);
+          document.getElementById('loading-msg').style.display = 'block';
+          document.getElementById('loading-msg').textContent   = 'Could not render map. Please try again later.';
+          document.getElementById('heat-map').style.display    = 'none';
         }
 
-        const count = points.length;
-        document.getElementById('map-count').textContent =
-          `${count} answer${count === 1 ? '' : 's'} plotted.`;
-
-        L.heatLayer(points, {
-          radius: 28, blur: 20, maxZoom: 17,
-          gradient: { 0.2: '#4575b4', 0.5: '#fee090', 1.0: '#d73027' },
-        }).addTo(heatMap);
-
-        const latlngs = points.map(p => [p[0], p[1]]);
-        if (latlngs.length > 1) {
-          heatMap.fitBounds(L.latLngBounds(latlngs), { padding: [40, 40], maxZoom: 15 });
-        }
-      })
-      .catch(() => {
+      } catch (fetchErr) {
+        console.error('Fetch error:', fetchErr);
         document.getElementById('submission-count').textContent = '?';
         document.getElementById('loading-msg').textContent = 'Could not load map data. Please try again later.';
-      });
+      }
+    }
+
+    initPage();
 
     // ── Pin-drop form map ────────────────────────────────────────
     const pinMap = L.map('pin-map').setView(MAP_CENTER, 14);
