@@ -191,12 +191,7 @@
     const MAP_CENTER = [33.063, -117.299];
 
     // ── Heat map ─────────────────────────────────────────────────
-    const heatMap = L.map('heat-map').setView(MAP_CENTER, 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
-    }).addTo(heatMap);
-
+    // Initialize AFTER making the div visible so Leaflet can measure it
     fetch(SCRIPT_URL)
       .then(r => r.json())
       .then(points => {
@@ -204,11 +199,16 @@
         document.getElementById('submission-count').textContent =
           Array.isArray(points) ? points.length : '?';
 
-        // Show map
+        // Show map container first, then init Leaflet
         document.getElementById('loading-msg').style.display = 'none';
         document.getElementById('heat-map').style.display    = 'block';
         document.getElementById('legend').style.display      = 'flex';
-        heatMap.invalidateSize();
+
+        const heatMap = L.map('heat-map').setView(MAP_CENTER, 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(heatMap);
 
         if (!points || points.length === 0) {
           document.getElementById('map-count').textContent = 'No pinned answers yet — be the first!';
