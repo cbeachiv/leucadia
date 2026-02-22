@@ -199,7 +199,7 @@ nav .nav-links a.active { color: var(--sunset); }
 
 /* ── How it works (index) ───────────────────────────────── */
 .how-it-works {
-  padding: 64px 0;
+  padding: 32px 0 64px;
 }
 .section-title {
   font-family: var(--font-display);
