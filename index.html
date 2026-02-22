@@ -169,7 +169,7 @@
 
   <!-- Leaflet + leaflet-heat -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="js/leaflet-heat.js"></script>
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyY3Aj8_VBicP-p2lm5Me_uXqsWY_fYYUous6NRdh8D_y2hB6UaX96aLjFcfeSnSuHAQA/exec';
     const MAP_CENTER = [33.063, -117.299];
@@ -196,20 +196,22 @@
           }).addTo(heatMap);
           heatMap.invalidateSize();
 
-          if (!points || points.length === 0) {
+          const validPoints = points.filter(p => p[0] != null && p[1] != null && !isNaN(p[0]) && !isNaN(p[1]));
+
+          if (validPoints.length === 0) {
             document.getElementById('map-count').textContent = 'No pinned answers yet — be the first!';
             return;
           }
 
           document.getElementById('map-count').textContent =
-            `${points.length} answer${points.length === 1 ? '' : 's'} plotted.`;
+            `${validPoints.length} answer${validPoints.length === 1 ? '' : 's'} plotted.`;
 
-          L.heatLayer(points, {
+          L.heatLayer(validPoints, {
             radius: 28, blur: 20, maxZoom: 17,
             gradient: { 0.2: '#4575b4', 0.5: '#fee090', 1.0: '#d73027' },
           }).addTo(heatMap);
 
-          const latlngs = points.map(p => [p[0], p[1]]);
+          const latlngs = validPoints.map(p => [p[0], p[1]]);
           if (latlngs.length > 1) {
             heatMap.fitBounds(L.latLngBounds(latlngs), { padding: [40, 40], maxZoom: 15 });
           }
