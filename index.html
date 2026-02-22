@@ -7,52 +7,28 @@
   <meta name="description" content="San Diego's most debated border. Tell us exactly where you think Leucadia begins and Encinitas ends." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="css/style.css" />
-  <style>
-    /* index-only overrides */
-    .intro-section { padding: 64px 0; }
-    .intro-section p {
-      font-size: 1rem;
-      color: #4b5563;
-      line-height: 1.8;
-      margin-bottom: 16px;
-    }
-    .heatmap-teaser {
-      background: var(--sand);
-      border-radius: 10px;
-      padding: 36px;
-      margin: 0 0 48px;
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-    .heatmap-teaser .icon { font-size: 2rem; flex-shrink: 0; }
-    .heatmap-teaser h3 {
-      font-family: var(--font-serif);
-      font-size: 1.2rem;
-      color: var(--blue);
-      margin-bottom: 6px;
-    }
-    .heatmap-teaser p { font-size: 0.9rem; color: var(--grey); margin: 0; }
-    .heatmap-teaser a { display: inline-block; margin-top: 12px; }
-  </style>
 </head>
 <body>
 
   <nav>
     <div class="container">
-      <a href="index.html"><img src="img/logo.png" alt="Where does Leucadia start?" class="nav-logo" /></a>
+      <a href="#top"><img src="img/logo.png" alt="Where does Leucadia start?" class="nav-logo" /></a>
       <ul class="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="submit.html">Submit</a></li>
-        <li><a href="heatmap.html">Heat Map</a></li>
+        <li><a href="#top" class="active">Home</a></li>
+        <li><a href="#community-map">The Map</a></li>
+        <li><a href="#submit">Submit</a></li>
       </ul>
     </div>
   </nav>
 
   <main>
-    <section class="hero">
+
+    <!-- ── Hero ─────────────────────────────────────────────── -->
+    <section class="hero" id="top">
       <div class="container">
         <img src="img/logo.png" alt="Where does Leucadia start?" class="hero-logo" />
         <p class="eyebrow" style="margin-bottom:8px;">San Diego's most debated border</p>
@@ -62,12 +38,13 @@
           Drop a pin and settle the debate — or add to it.
         </p>
         <div class="hero-actions">
-          <a href="submit.html" class="btn btn-primary">Submit your answer</a>
-          <a href="heatmap.html" class="btn btn-secondary">See the heat map</a>
+          <a href="#submit" class="btn btn-primary">Submit your answer</a>
+          <a href="#community-map" class="btn btn-secondary">See the heat map</a>
         </div>
       </div>
     </section>
 
+    <!-- ── Stats bar ─────────────────────────────────────────── -->
     <div class="stats-bar">
       <div class="container">
         <span class="stat-number" id="submission-count">—</span>
@@ -75,30 +52,42 @@
       </div>
     </div>
 
-    <section class="intro-section">
+    <!-- ── Community heat map ────────────────────────────────── -->
+    <section id="community-map" style="padding: 64px 0 48px;">
       <div class="container">
+        <h2 class="section-title">The community verdict</h2>
+        <p style="font-size:0.95rem; color:var(--grey); margin-bottom:24px;">
+          Each point represents one person's answer. Hotter zones mean more agreement.
+          <span id="map-count"></span>
+        </p>
 
-        <div class="heatmap-teaser">
-          <div class="icon">🗺️</div>
-          <div>
-            <h3>The community has spoken (sort of)</h3>
-            <p>
-              Every answer gets plotted on a map. The hotter the spot,
-              the more people agree that's where Leucadia begins.
-            </p>
-            <a href="heatmap.html" class="btn btn-secondary" style="font-size:0.85rem; padding:9px 18px;">View heat map →</a>
-          </div>
+        <div id="loading-msg" class="loading-msg">Loading answers…</div>
+        <div id="heat-map" style="display:none;"></div>
+
+        <div class="legend" id="legend" style="display:none;">
+          <span>Fewer answers</span>
+          <div class="legend-gradient"></div>
+          <span>More answers</span>
         </div>
 
-        <hr class="divider" />
+        <p style="font-size:0.85rem; color:var(--grey); margin-bottom:0; text-align:center;">
+          Have an opinion? <a href="#submit">Add yours below.</a>
+        </p>
+      </div>
+    </section>
 
+    <hr class="divider" />
+
+    <!-- ── How it works ──────────────────────────────────────── -->
+    <section class="how-it-works">
+      <div class="container">
         <h2 class="section-title">How it works</h2>
         <div class="steps">
           <div class="step">
             <div class="step-num">1</div>
             <div class="step-body">
               <h3>Drop a pin</h3>
-              <p>Use the map on the submission page to mark the exact spot where you think Leucadia begins — or Encinitas ends, depending on your loyalties.</p>
+              <p>Use the map below to mark the exact spot where you think Leucadia begins — or Encinitas ends, depending on your loyalties.</p>
             </div>
           </div>
           <div class="step">
@@ -112,42 +101,203 @@
             <div class="step-num">3</div>
             <div class="step-body">
               <h3>Watch the map heat up</h3>
-              <p>Your answer joins the heat map. Where do the clusters form? Is there consensus, or pure chaos?</p>
+              <p>Your answer joins the community verdict above. Where do the clusters form? Is there consensus, or pure chaos?</p>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Submission form ───────────────────────────────────── -->
+    <section id="submit" style="padding: 64px 0;">
+      <div class="container">
+
+        <div class="page-header">
+          <h1>Submit your answer</h1>
+          <p>Where do <em>you</em> think Leucadia starts? Drop a pin on the map below.</p>
+        </div>
+
+        <!-- Success state (hidden until submit) -->
+        <div id="success-message">
+          <div class="checkmark">📍</div>
+          <h2>Pin dropped. Thanks.</h2>
+          <p>Your answer has been added to the map. Let's see if anyone agrees with you.</p>
+          <a href="#community-map" class="btn btn-primary">See the heat map</a>
+          &nbsp;
+          <a href="#top" class="btn btn-secondary">Back to top</a>
+        </div>
+
+        <!-- Form -->
+        <div id="form-wrapper">
+          <form id="submission-form" class="form-card" novalidate>
+
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+              <p class="hint">Not shared publicly. We won't email you.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="answer">Your take (optional)</label>
+              <textarea id="answer" name="answer" placeholder="e.g. &quot;It starts at Grandview — everyone knows this.&quot;"></textarea>
+              <p class="hint">A street name, intersection, landmark, or whatever you want to say.</p>
+            </div>
+
+            <!-- Map pin drop -->
+            <div class="form-group">
+              <span class="map-label">Drop your pin <span style="color:var(--sunset)">*</span></span>
+              <p class="map-hint">Click anywhere on the map to mark where you think Leucadia begins.</p>
+              <div id="pin-map"></div>
+              <p class="pin-coords" id="pin-coords"></p>
+              <p class="pin-required-msg" id="pin-required-msg">Please drop a pin on the map before submitting.</p>
+              <input type="hidden" id="lat" name="lat" />
+              <input type="hidden" id="lng" name="lng" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="submit-btn" style="width:100%; font-size:1rem; padding:15px;">
+              Submit my answer
+            </button>
+
+          </form>
         </div>
 
       </div>
     </section>
+
   </main>
 
   <footer>
     <div class="container">
       <p>
         A community curiosity project &nbsp;·&nbsp;
-        <a href="submit.html">Submit your answer</a> &nbsp;·&nbsp;
-        <a href="heatmap.html">Heat map</a>
+        <a href="#submit">Submit your answer</a> &nbsp;·&nbsp;
+        <a href="#community-map">Heat map</a>
       </p>
     </div>
   </footer>
 
+  <!-- Leaflet + leaflet-heat -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
   <script>
-    // Fetch submission count from Apps Script doGet endpoint
-    // Replace SCRIPT_URL with your deployed Apps Script URL
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-kRLJkScaHUe3E-pN9Q8F6v-FO_gt4LV7ml2R4hWdbYRlcq6O40CYVTLYnIj-4vIYiA/exec';
+    const MAP_CENTER = [33.063, -117.299];
 
-    if (SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
-      fetch(SCRIPT_URL)
-        .then(r => r.json())
-        .then(data => {
-          const count = Array.isArray(data) ? data.length : 0;
-          // Show total rows including those without pins (historical)
-          document.getElementById('submission-count').textContent = count;
-        })
-        .catch(() => {
-          document.getElementById('submission-count').textContent = '?';
+    // ── Heat map ─────────────────────────────────────────────────
+    const heatMap = L.map('heat-map').setView(MAP_CENTER, 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(heatMap);
+
+    fetch(SCRIPT_URL)
+      .then(r => r.json())
+      .then(points => {
+        // Update submission count
+        document.getElementById('submission-count').textContent =
+          Array.isArray(points) ? points.length : '?';
+
+        // Show map
+        document.getElementById('loading-msg').style.display = 'none';
+        document.getElementById('heat-map').style.display    = 'block';
+        document.getElementById('legend').style.display      = 'flex';
+        heatMap.invalidateSize();
+
+        if (!points || points.length === 0) {
+          document.getElementById('map-count').textContent = 'No pinned answers yet — be the first!';
+          return;
+        }
+
+        const count = points.length;
+        document.getElementById('map-count').textContent =
+          `${count} answer${count === 1 ? '' : 's'} plotted.`;
+
+        L.heatLayer(points, {
+          radius: 28, blur: 20, maxZoom: 17,
+          gradient: { 0.2: '#4575b4', 0.5: '#fee090', 1.0: '#d73027' },
+        }).addTo(heatMap);
+
+        const latlngs = points.map(p => [p[0], p[1]]);
+        if (latlngs.length > 1) {
+          heatMap.fitBounds(L.latLngBounds(latlngs), { padding: [40, 40], maxZoom: 15 });
+        }
+      })
+      .catch(() => {
+        document.getElementById('submission-count').textContent = '?';
+        document.getElementById('loading-msg').textContent = 'Could not load map data. Please try again later.';
+      });
+
+    // ── Pin-drop form map ────────────────────────────────────────
+    const pinMap = L.map('pin-map').setView(MAP_CENTER, 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(pinMap);
+
+    const pinIcon = L.divIcon({
+      className: '',
+      html: `<div style="
+        width:22px;height:22px;
+        background:#e8531a;
+        border:3px solid #fff;
+        border-radius:50% 50% 50% 0;
+        transform:rotate(-45deg);
+        box-shadow:0 2px 8px rgba(0,0,0,0.3);
+      "></div>`,
+      iconSize: [22, 22],
+      iconAnchor: [11, 22],
+    });
+
+    let marker = null;
+    pinMap.on('click', function (e) {
+      const { lat, lng } = e.latlng;
+      if (marker) { marker.setLatLng(e.latlng); }
+      else { marker = L.marker(e.latlng, { icon: pinIcon }).addTo(pinMap); }
+      document.getElementById('lat').value = lat.toFixed(6);
+      document.getElementById('lng').value = lng.toFixed(6);
+      document.getElementById('pin-coords').textContent = `📍 ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+      document.getElementById('pin-required-msg').style.display = 'none';
+    });
+
+    // ── Form submission ──────────────────────────────────────────
+    document.getElementById('submission-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const name   = document.getElementById('name').value.trim();
+      const email  = document.getElementById('email').value.trim();
+      const answer = document.getElementById('answer').value.trim();
+      const lat    = document.getElementById('lat').value;
+      const lng    = document.getElementById('lng').value;
+
+      if (!lat || !lng) {
+        document.getElementById('pin-required-msg').style.display = 'block';
+        document.getElementById('pin-map').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (!name || !email) { this.reportValidity(); return; }
+
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Submitting…';
+      btn.disabled = true;
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, answer, lat: parseFloat(lat), lng: parseFloat(lng) }),
         });
-    }
+      } catch (err) { console.error('Submission error:', err); }
+
+      document.getElementById('form-wrapper').style.display  = 'none';
+      document.getElementById('success-message').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   </script>
 
 </body>
